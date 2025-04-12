@@ -1,0 +1,8 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Ocultar la barra de desplazamiento */
+.hide-scrollbar::-webkit-scrollbar {
+   display: none;
+}
