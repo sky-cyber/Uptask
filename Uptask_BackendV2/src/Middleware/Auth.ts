@@ -26,7 +26,9 @@ export const Authenticate = async (
    try {
       const decoded = jwt.verify(token, process.env.TOKEN_SECRET);
       if (typeof decoded === "object" && decoded.Id) {
-         const user = await User.findById(decoded.Id).select("_id name email");
+         const user = await User.findById(decoded.Id).select(
+            "_id name email urlImagen"
+         );
          if (user) {
             req.user = user;
             next();

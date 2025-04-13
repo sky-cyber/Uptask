@@ -26,7 +26,7 @@ export async function IsTaskExit(
 
       const task = await Task.findById(taskID).populate({
          path: "createBy.user",
-         select: "_id name email",
+         select: "_id name email urlImagen",
       });
 
       if (!task) {

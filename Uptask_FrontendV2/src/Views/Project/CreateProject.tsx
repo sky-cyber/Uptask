@@ -2,12 +2,12 @@ import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 
 import ProjectForm from "@/Components/Project/ProjectForm";
-import { ProjectFormData } from "@/Types/index";
 
 import { useMutation } from "@tanstack/react-query";
 import { RegisterProject } from "@/Services/ProjectServices";
 
 import { toast } from "react-toastify";
+import { ProjectFormData } from "@/Types/Projects";
 
 export default function CreateProject() {
    const navigate = useNavigate();

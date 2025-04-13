@@ -92,11 +92,11 @@ export class TeamController {
          const project = await Project.findById(req.project.id)
             .populate({
                path: "manager",
-               select: "_id name email",
+               select: "_id name email urlImagen",
             })
             .populate({
                path: "teams",
-               select: "_id name email",
+               select: "_id name email urlImagen",
             });
 
          res.json({ manager: project.manager, teams: project.teams });

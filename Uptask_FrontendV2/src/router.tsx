@@ -12,6 +12,9 @@ import NewCodeToken from "./Views/Auth/NewCodeToken";
 import ForgotPassword from "./Views/Auth/ForgotPassword";
 import RestorePassword from "./Views/Auth/RestorePassword";
 import TeamsProjectView from "./Views/Project/TeamsProjectView";
+import ProfileLayaout from "./Layouts/ProfileLayaout";
+import ProfileView from "./Views/Profile/ProfileView";
+import ChangePassword from "./Views/Profile/ChangePassword";
 
 const AppRouter = () => {
    return (
@@ -39,6 +42,16 @@ const AppRouter = () => {
                   path="/projects/:projectID/teams"
                   element={<TeamsProjectView />}
                />
+
+               <Route>
+                  <Route element={<ProfileLayaout />}>
+                     <Route path="/profile/view" element={<ProfileView />} />
+                     <Route
+                        path="/profile/change-password"
+                        element={<ChangePassword />}
+                     />
+                  </Route>
+               </Route>
             </Route>
             <Route>
                <Route element={<AuthLayout />}>

@@ -3,6 +3,7 @@ import { z } from "zod";
 export const UserSchemma = z.object({
    name: z.string(),
    email: z.string().email(),
+   urlImagen: z.string(),
    password: z.string(),
    confirm_password: z.string(),
    token: z.string(),
@@ -30,7 +31,11 @@ export type RestorePasswordTypeForm = Pick<
    "password" | "confirm_password"
 >;
 
-export const authShemma = UserSchemma.pick({ name: true, email: true }).extend({
+export const authShemma = UserSchemma.pick({
+   name: true,
+   email: true,
+   urlImagen: true,
+}).extend({
    _id: z.string(),
 });
 

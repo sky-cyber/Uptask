@@ -135,7 +135,7 @@ router.delete(
    TeamController.deleteMemeberToProject
 );
 
-// TODO:************************* TEAMS ************************* //
+// TODO:************************* Notes ************************* //
 
 router.get(
    "/:projectID/tasks/:taskID/read-notes",

@@ -29,7 +29,7 @@ export class NotesController {
       try {
          const task = await Task.findById(req.task.id).populate({
             path: "notes",
-            populate: { path: "user", select: "_id name email" },
+            populate: { path: "user", select: "_id name email urlImagen" },
          });
 
          res.json(task.notes);

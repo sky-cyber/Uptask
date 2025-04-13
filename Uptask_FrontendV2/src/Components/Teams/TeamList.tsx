@@ -50,7 +50,7 @@ export default function TeamList({
                      <div className="text-center p-8 w-full md:w-6/12 lg:w-4/12 2xl:w-3/12 bg-discord-darker ring-1 ring-gray-500/20 border-b border-black/55 shadow-2xl rounded-lg">
                         <div className="flex flex-row justify-center">
                            <img
-                              src="https://randomuser.me/api/portraits/women/3.jpg"
+                              src={data.manager.urlImagen}
                               alt="Usuario"
                               className="w-28 rounded-full"
                            />

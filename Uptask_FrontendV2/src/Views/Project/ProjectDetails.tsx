@@ -7,7 +7,7 @@ import { H_UserAuth } from "@/Hooks/UseAuth";
 import { getProjectById } from "@/Services/ProjectServices";
 import { useQuery } from "@tanstack/react-query";
 import { useMemo } from "react";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { Link, Navigate, useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 
 export default function ProjectDetails() {
@@ -31,7 +31,7 @@ export default function ProjectDetails() {
 
    if (isError) {
       toast.error(error.message, { toastId: "error" });
-      return navigate("/");
+      return <Navigate to="/" replace />;
    }
 
    if (isLoading) {

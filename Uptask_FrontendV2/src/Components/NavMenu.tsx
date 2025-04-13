@@ -51,7 +51,7 @@ export default function NavMenu({ user }: NavMenuProps) {
             </li>
             <li className="border-b border-gray-700 md:border-none">
                <Link
-                  to="/perfil"
+                  to="/profile/view"
                   className="flex items-center justify-center py-4 px-6 hover:text-discord-primary rounded md:rounded-none"
                >
                   <FaUser />
@@ -60,7 +60,7 @@ export default function NavMenu({ user }: NavMenuProps) {
             </li>
             <li className="flex py-5 md:p-0 justify-center items-center border-b border-gray-700 md:border-none">
                <img
-                  src="https://randomuser.me/api/portraits/women/3.jpg"
+                  src={user.urlImagen}
                   alt="Usuario"
                   className="w-16 h-16 md:w-10 md:h-10 rounded-full mr-3 md:mr-1"
                />
