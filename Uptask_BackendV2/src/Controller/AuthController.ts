@@ -241,4 +241,47 @@ export class AuthController {
          return HandleErrorServer(res, error.message);
       }
    };
+
+   static updateUser = async (req: Request, res: Response) => {
+      try {
+         const { name, email, urlImagen } = req.body;
+
+         req.user.name = name;
+         req.user.email = email;
+         req.user.urlImagen =
+            urlImagen === ""
+               ? "https://cdn-icons-png.flaticon.com/512/149/149071.png"
+               : urlImagen;
+         await req.user.save();
+
+         res.send("Se han restablecido los cambios correctamente");
+      } catch (error) {
+         return HandleErrorServer(res, error.message);
+      }
+   };
+
+   static updatePasswordProfile = async (req: Request, res: Response) => {
+      try {
+         const { password, newPassword } = req.body;
+
+         // Buscamos al usuario su contraseña
+         const user = await User.findById(req.user.id);
+
+         // verificar si las contraseñas son validas con la BD
+         const isCheckPassword = await checkPassword(password, user.password);
+
+         if (!isCheckPassword) {
+            return HandleErrorConflict(res, "La contraseña es invalida");
+         }
+
+         // Actualizamos la nueva contraseña
+         const newPasswordUser = await hashPassword(newPassword);
+         user.password = newPasswordUser;
+         await user.save();
+
+         res.send("La contraseña se actualizado correctamente");
+      } catch (error) {
+         return HandleErrorServer(res, error.message);
+      }
+   };
 }

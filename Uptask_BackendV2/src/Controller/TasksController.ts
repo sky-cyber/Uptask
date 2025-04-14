@@ -92,4 +92,15 @@ export class TasksController {
          return HandleErrorServer(res, error.message);
       }
    };
+
+   static getCantRegister = async (req: Request, res: Response) => {
+      try {
+         res.json({
+            createBy: req.task.createBy.length,
+            notes: req.task.notes.length,
+         });
+      } catch (error) {
+         return HandleErrorServer(res, error.message);
+      }
+   };
 }

@@ -95,6 +95,42 @@ router.post(
    AuthController.restoreNewPassword
 );
 
+// TODO:************************* PROFILE ************************* //
+
 router.get("/get-user", Authenticate, AuthController.getUser);
+
+router.put(
+   "/update-profile",
+   Authenticate,
+   body("name").notEmpty().withMessage("El campo usuario no puede ir vacio"),
+   body("email")
+      .notEmpty()
+      .withMessage("El email no puede ir vacío")
+      .isEmail()
+      .withMessage("Email no valido"),
+   handleInputErrors,
+   AuthController.updateUser
+);
+
+router.put(
+   "/update-password-profile",
+   Authenticate,
+   body("password")
+      .notEmpty()
+      .withMessage("Su contraseña actual es obligatoria"),
+   body("newPassword")
+      .notEmpty()
+      .withMessage("La contraseña no puede ir vacía")
+      .isLength({ min: 8 })
+      .withMessage("La contraseña debe contener minimo 8 caracteres"),
+   body("confirm_password").custom((value, { req }) => {
+      if (value !== req.body.newPassword) {
+         throw new Error("Las nuevas contraseñas no coinciden");
+      }
+      return true;
+   }),
+   handleInputErrors,
+   AuthController.updatePasswordProfile
+);
 
 export default router;

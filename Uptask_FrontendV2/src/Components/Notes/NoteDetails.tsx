@@ -53,7 +53,7 @@ export default function NoteDetails({
       <div className="bg-discord-darker p-4 rounded-lg shadow">
          <div className="block md:flex items-center mb-2">
             <img
-               src="https://randomuser.me/api/portraits/women/3.jpg"
+               src={data.user.urlImagen}
                alt="User Avatar"
                className="w-14 h-14 rounded-full mr-3"
             />

@@ -81,6 +81,11 @@ router.get("/:projectID/tasks", TasksController.getAllTaskByProject);
 
 router.get("/:projectID/tasks/:taskID", TasksController.getTaskById);
 
+router.get(
+   "/:projectID/tasks/:taskID/CantRegister",
+   TasksController.getCantRegister
+);
+
 router.put(
    "/:projectID/tasks/:taskID",
    param("taskID").isMongoId().withMessage("ID no valido"),

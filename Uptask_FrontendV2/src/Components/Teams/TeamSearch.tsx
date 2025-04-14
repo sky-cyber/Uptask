@@ -40,7 +40,7 @@ export default function TeamSearch({ user, projectID }: TeamSearchProps) {
 
          <div className="flex py-5 md:mt-5 md:p-0 justify-center items-center border-b md:border-none border-gray-700">
             <img
-               src="https://randomuser.me/api/portraits/women/3.jpg"
+               src={user.urlImagen}
                alt="Usuario"
                className="w-24 md:h-24 rounded-full mr-3 md:mr-1"
             />

@@ -4,7 +4,14 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 
-import { FaEye, FaPencilAlt, FaTrashRestore } from "react-icons/fa";
+import {
+   FaEye,
+   FaPencilAlt,
+   FaTrashRestore,
+   FaCommentDots,
+} from "react-icons/fa";
+import { VscListFlat } from "react-icons/vsc";
+import { H_TasksCantRegistro } from "@/Hooks/Tasks";
 
 type TaskCardProp = {
    task: TaskCardData;
@@ -17,6 +24,8 @@ export default function TaskCard({ task, CanUseThisFunction }: TaskCardProp) {
    const projectID = paramsURL.projectID!;
 
    const queryClient = useQueryClient();
+
+   const { data: cant } = H_TasksCantRegistro(projectID, task._id);
 
    const mutation = useMutation({
       mutationFn: deleteTask,
@@ -90,12 +99,19 @@ export default function TaskCard({ task, CanUseThisFunction }: TaskCardProp) {
                   )}
                </div>
 
-               <div className="flex justify-center items-cente">
-                  <img
-                     src="https://randomuser.me/api/portraits/women/5.jpg"
-                     alt="Usuario"
-                     className="w-8 h-8 rounded-full"
-                  />
+               <div className="flex justify-center items-center gap-3">
+                  <div className="relative text-blue-100 rounded">
+                     <FaCommentDots className="text-xl text-bag-400" />
+                     <span className="absolute bg-discord-background text-blue-100 px-1 text-xs font-bold rounded-full -top-2 -right-1">
+                        {cant?.notes}
+                     </span>
+                  </div>
+                  <div className="relative text-blue-100 rounded">
+                     <VscListFlat className="text-xl" />
+                     <span className="absolute bg-discord-background text-blue-100 px-1 text-xs font-bold rounded-full -top-2 -right-1">
+                        {cant?.createBy}
+                     </span>
+                  </div>
                </div>
             </div>
          </div>

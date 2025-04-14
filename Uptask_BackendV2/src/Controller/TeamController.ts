@@ -17,7 +17,7 @@ export class TeamController {
          const { email } = req.body;
 
          const user = await User.findOne({ email }).select(
-            "id name email confirmed"
+            "id name email urlImagen confirmed"
          );
 
          if (!user) {

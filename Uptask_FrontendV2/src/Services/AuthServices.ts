@@ -4,6 +4,8 @@ import {
    ConfirmAccountForm,
    ForgotPasswordForm,
    NewTokenForm,
+   Profile,
+   PutPasswordUser,
    RestorePasswordTypeForm,
    UserLoginForm,
    UserRegristerForm,
@@ -115,6 +117,30 @@ export const getUser = async () => {
       if (response.success) {
          return response.data;
       }
+   } catch (error) {
+      if (isAxiosError(error) && error.response) {
+         throw new Error(error.response.data.error);
+      }
+   }
+};
+
+export const updateProfile = async (formData: Profile) => {
+   try {
+      const url = "/auth/update-profile";
+      const { data } = await api.put<string>(url, formData);
+      return data;
+   } catch (error) {
+      if (isAxiosError(error) && error.response) {
+         throw new Error(error.response.data.error);
+      }
+   }
+};
+
+export const updatePasswordProfile = async (formData: PutPasswordUser) => {
+   try {
+      const url = "/auth/update-password-profile";
+      const { data } = await api.put<string>(url, formData);
+      return data;
    } catch (error) {
       if (isAxiosError(error) && error.response) {
          throw new Error(error.response.data.error);

@@ -1,6 +1,12 @@
 import api from "@/Lib/Axios";
 import { Project } from "@/Types/Projects";
-import { Task, TaskFormData, TaskSchemma } from "@/Types/Task";
+import {
+   cantRegisterShema,
+   Task,
+   TaskCantRegister,
+   TaskFormData,
+   TaskSchemma,
+} from "@/Types/Task";
 import { isAxiosError } from "axios";
 
 type ApiParamsServices = {
@@ -93,6 +99,25 @@ export const updateStatusTask = async ({
       const url = `projects/${projectID}/tasks/${taskID}/status`;
       const { data } = await api.patch<string>(url, { status });
       return data;
+   } catch (error) {
+      if (isAxiosError(error) && error.response) {
+         throw new Error(error.response.data.error);
+      }
+   }
+};
+
+export const getCantRegister = async ({
+   projectID,
+   taskID,
+}: Pick<ApiParamsServices, "projectID" | "taskID">) => {
+   try {
+      const { data } = await api.get<TaskCantRegister>(
+         `projects/${projectID}/tasks/${taskID}/CantRegister`
+      );
+      const result = cantRegisterShema.safeParse(data);
+      if (result.success) {
+         return result.data;
+      }
    } catch (error) {
       if (isAxiosError(error) && error.response) {
          throw new Error(error.response.data.error);

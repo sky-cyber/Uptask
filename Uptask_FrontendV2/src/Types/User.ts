@@ -39,4 +39,12 @@ export const authShemma = UserSchemma.pick({
    _id: z.string(),
 });
 
+export const putUserSchemma = UserSchemma.pick({
+   password: true,
+   confirm_password: true,
+}).extend({
+   newPassword: z.string(),
+});
+
 export type Profile = z.infer<typeof authShemma>;
+export type PutPasswordUser = z.infer<typeof putUserSchemma>;

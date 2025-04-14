@@ -41,6 +41,7 @@ export const getAllProject = async () => {
 export const getProjectById = async (projectID: Project["_id"]) => {
    try {
       const { data } = await api.get<Project>(`/projects/${projectID}`);
+
       const result = ProjectSchema.safeParse(data);
       if (result.success) {
          return result.data;

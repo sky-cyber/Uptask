@@ -16,6 +16,11 @@ export const LogMovTasksByUser = z.object({
    updateAt: z.string(),
 });
 
+export const cantRegisterShema = z.object({
+   createBy: z.number(),
+   notes: z.number(),
+});
+
 export const TaskSchemma = z.object({
    _id: z.string(),
    name: z.string(),
@@ -25,12 +30,16 @@ export const TaskSchemma = z.object({
    createdAt: z.string(),
    updatedAt: z.string(),
    createBy: z.array(LogMovTasksByUser),
+   notes: z.array(z.string()),
 });
 
-export const ListTasksSchema = z.array(TaskSchemma.omit({ createBy: true }));
+export const ListTasksSchema = z.array(
+   TaskSchemma.omit({ createBy: true, notes: true })
+);
 
 export type Task = z.infer<typeof TaskSchemma>;
 
-export type TaskCardData = Omit<Task, "createBy">;
+export type TaskCardData = Task;
 export type TaskFormData = Pick<Task, "name" | "description">;
 export type TaskStatus = z.infer<typeof TaskStatusSchemma>;
+export type TaskCantRegister = z.infer<typeof cantRegisterShema>;

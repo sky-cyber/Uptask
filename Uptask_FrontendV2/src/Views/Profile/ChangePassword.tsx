@@ -1,6 +1,40 @@
 import ProfilePasswordPut from "@/Components/Profile/ProfilePasswordPut";
+import { updatePasswordProfile } from "@/Services/AuthServices";
+import { PutPasswordUser } from "@/Types/User";
+import { useMutation } from "@tanstack/react-query";
+import { useForm } from "react-hook-form";
+import { toast } from "react-toastify";
 
 export default function ChangePassword() {
+   const initialValue: PutPasswordUser = {
+      password: "",
+      newPassword: "",
+      confirm_password: "",
+   };
+
+   const {
+      register,
+      handleSubmit,
+      watch,
+      reset,
+      formState: { errors },
+   } = useForm<PutPasswordUser>({ defaultValues: initialValue });
+
+   const mutation = useMutation({
+      mutationFn: updatePasswordProfile,
+      onError: (error) => {
+         toast.error(error.message);
+      },
+      onSuccess: (result) => {
+         toast.success(result);
+         reset();
+      },
+   });
+
+   const handlePutPassword = async (formData: PutPasswordUser) => {
+      await mutation.mutateAsync(formData);
+   };
+
    return (
       <>
          <div className="max-w-3xl mx-auto">
@@ -14,8 +48,13 @@ export default function ChangePassword() {
                         bg-discord-darker p-5 rounded-lg shadow-lg
                         ring-1 ring-gray-500/20 border-b border-black/55"
                noValidate
+               onSubmit={handleSubmit(handlePutPassword)}
             >
-               <ProfilePasswordPut />
+               <ProfilePasswordPut
+                  register={register}
+                  errors={errors}
+                  watch={watch}
+               />
 
                <input
                   type="submit"
