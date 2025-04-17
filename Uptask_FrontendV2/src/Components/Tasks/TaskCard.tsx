@@ -12,6 +12,10 @@ import {
 } from "react-icons/fa";
 import { VscListFlat } from "react-icons/vsc";
 import { H_TasksCantRegistro } from "@/Hooks/Tasks";
+import {
+   priorityRGB,
+   priorityTraslations,
+} from "@/helpers/TrasnsitionPriority";
 
 type TaskCardProp = {
    task: TaskCardData;
@@ -43,15 +47,19 @@ export default function TaskCard({ task, CanUseThisFunction }: TaskCardProp) {
       await mutation.mutateAsync(data);
    };
 
+   const claseColorRG = priorityRGB[task.priority];
+
    return (
       <li className="bg-discord-darker p-3 border flex justify-between gap-3 rounded-lg ring-1 ring-gray-500/20 border-b border-black/55">
          <div className="flex-auto min-w-16 flex flex-col gap-2">
             <div
-               className="flex justify-center w-16 text-xs bg-amber-100 border border-amber-800 text-amber-700 rounded-xl"
+               className={`flex justify-center w-16 text-xs ${claseColorRG} rounded-xl`}
                role="alert"
             >
                <span className="block sm:inline">
-                  <strong className="font-bold">Media</strong>
+                  <strong className="font-bold">
+                     {priorityTraslations[task.priority]}
+                  </strong>
                </span>
             </div>
 

@@ -9,6 +9,8 @@ export const TaskStatusSchemma = z.enum([
    "completed",
 ]);
 
+export const TaskPrioritySchemma = z.enum(["low", "medium", "high", "urgent"]);
+
 export const LogMovTasksByUser = z.object({
    _id: z.string(),
    user: authShemma,
@@ -31,6 +33,7 @@ export const TaskSchemma = z.object({
    updatedAt: z.string(),
    createBy: z.array(LogMovTasksByUser),
    notes: z.array(z.string()),
+   priority: TaskPrioritySchemma,
 });
 
 export const ListTasksSchema = z.array(
@@ -40,6 +43,7 @@ export const ListTasksSchema = z.array(
 export type Task = z.infer<typeof TaskSchemma>;
 
 export type TaskCardData = Task;
-export type TaskFormData = Pick<Task, "name" | "description">;
+export type TaskFormData = Pick<Task, "name" | "description" | "priority">;
 export type TaskStatus = z.infer<typeof TaskStatusSchemma>;
+export type TasksPriority = z.infer<typeof TaskPrioritySchemma>;
 export type TaskCantRegister = z.infer<typeof cantRegisterShema>;

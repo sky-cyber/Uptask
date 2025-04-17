@@ -1,4 +1,4 @@
-import { Fragment } from "react";
+import { Fragment, useState } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import TaskForm from "./TaskForm";
 import { useForm } from "react-hook-form";
@@ -7,7 +7,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 import { CreateTask } from "@/Services/TaskServices";
 import { toast } from "react-toastify";
-import { TaskFormData } from "@/Types/Task";
+import { TaskFormData, TasksPriority } from "@/Types/Task";
 
 export default function AddTaskModal() {
    const navigate = useNavigate();
@@ -19,9 +19,13 @@ export default function AddTaskModal() {
    const paramsUrl = useParams();
    const projectID = paramsUrl.projectID!;
 
+   // Capturar la propiedad de la tarea
+   const [taskPriority, setTaskPriority] = useState<TasksPriority>("low");
+
    const InitialValue: TaskFormData = {
       name: "",
       description: "",
+      priority: "low",
    };
 
    const {
@@ -49,6 +53,7 @@ export default function AddTaskModal() {
    });
 
    const handleForm = async (formData: TaskFormData) => {
+      formData.priority = taskPriority as TasksPriority;
       const data = { projectID, formData };
       await mutation.mutateAsync(data);
    };
@@ -108,7 +113,12 @@ export default function AddTaskModal() {
                               onSubmit={handleSubmit(handleForm)}
                               noValidate
                            >
-                              <TaskForm register={register} errors={errors} />
+                              <TaskForm
+                                 register={register}
+                                 errors={errors}
+                                 setTaskPriority={setTaskPriority}
+                                 taskPriority={taskPriority}
+                              />
 
                               <input
                                  type="submit"

@@ -37,7 +37,7 @@ export default function ListTasks({
                   >
                      {statusTraslations[status]}
                   </h3>
-                  <ul className="mt-5 space-y-5 bg-discord-background_Second p-3 rounded-lg ring-1 ring-gray-500/20 border-b border-black/55">
+                  <ul className="mt-5 space-y-1 bg-discord-background_Second p-1 rounded-lg ring-1 ring-gray-500/20 border-b border-black/55">
                      {tasks.length === 0 ? (
                         <li className="text-gray-500 text-center pt-3">
                            No hay tareas asignadas

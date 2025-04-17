@@ -51,6 +51,7 @@ export class TasksController {
 
          req.task.name = req.body.name;
          req.task.description = req.body.description;
+         req.task.priority = req.body.priority;
          await req.task.save();
          res.send("Tarea actualizada");
       } catch (error) {

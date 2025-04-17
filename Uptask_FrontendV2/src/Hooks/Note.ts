@@ -15,6 +15,7 @@ type h_Params = {
    queryClient: QueryClient;
    noteID: Note["_id"];
    handleActiveTextArea: () => void;
+   taskID: string;
 };
 
 export const H_NoteList = (projectID: string, taskID: string) => {
@@ -46,7 +47,8 @@ export const H_NoteDetails = (
 export const H_NoteCreate = ({
    reset,
    queryClient,
-}: Pick<h_Params, "reset" | "queryClient">) => {
+   taskID,
+}: Pick<h_Params, "reset" | "queryClient" | "taskID">) => {
    return useMutation({
       mutationFn: createNoteFromTask,
       onError: (error) => {
@@ -55,6 +57,9 @@ export const H_NoteCreate = ({
       onSuccess: (result) => {
          queryClient.invalidateQueries({
             queryKey: ["NoteList"],
+         });
+         queryClient.refetchQueries({
+            queryKey: ["cantRegister", taskID],
          });
          toast.success(result);
          reset();

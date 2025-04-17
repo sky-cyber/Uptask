@@ -25,7 +25,7 @@ export default function NoteForm({ projectID, taskID }: NoteFormProps) {
 
    const queryClient = useQueryClient();
 
-   const { mutate } = H_NoteCreate({ reset, queryClient });
+   const { mutate } = H_NoteCreate({ reset, queryClient, taskID });
 
    const handleCreateNote = async (formData: Content) => {
       const data = { projectID, taskID, formData };

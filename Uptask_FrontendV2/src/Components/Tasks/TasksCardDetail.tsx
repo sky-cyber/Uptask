@@ -124,7 +124,7 @@ export default function TasksCardDetail({
             <select
                defaultValue={data.status}
                onChange={handleChangeStatus}
-               className="w-full p-3 bg-discord-background rounded-lg "
+               className="w-full p-3 bg-discord-background rounded-lg"
             >
                {Object.entries(statusTraslations).map(([key, value]) => (
                   <option key={key} value={key}>

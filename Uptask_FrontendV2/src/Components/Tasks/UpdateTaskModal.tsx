@@ -1,4 +1,4 @@
-import { Task, TaskFormData } from "@/Types/Task";
+import { Task, TaskFormData, TasksPriority } from "@/Types/Task";
 import { Project } from "@/Types/Projects";
 import { Dialog, Transition } from "@headlessui/react";
 import TaskForm from "./TaskForm";
@@ -8,6 +8,7 @@ import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { updateTask } from "@/Services/TaskServices";
+import { useState } from "react";
 
 type UpdateTaskModalProp = {
    task: Task;
@@ -22,9 +23,15 @@ export default function UpdateTaskModal({
 
    const taskID = task._id;
 
+   // Capturar la propiedad de la tarea
+   const [taskPriority, setTaskPriority] = useState<TasksPriority>(
+      task.priority
+   );
+
    const InitialValue: TaskFormData = {
       name: task.name,
       description: task.description,
+      priority: task.priority,
    };
 
    const {
@@ -55,6 +62,7 @@ export default function UpdateTaskModal({
    });
 
    const handleForm = async (formData: TaskFormData) => {
+      formData.priority = taskPriority as TasksPriority;
       const data = { projectID, taskID, formData };
       await mutation.mutateAsync(data);
    };
@@ -114,7 +122,12 @@ export default function UpdateTaskModal({
                               onSubmit={handleSubmit(handleForm)}
                               noValidate
                            >
-                              <TaskForm register={register} errors={errors} />
+                              <TaskForm
+                                 register={register}
+                                 errors={errors}
+                                 setTaskPriority={setTaskPriority}
+                                 taskPriority={taskPriority}
+                              />
 
                               <input
                                  type="submit"

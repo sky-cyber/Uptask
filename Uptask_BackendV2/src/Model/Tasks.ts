@@ -1,5 +1,4 @@
-import mongoose, { Document, PopulatedDoc, Schema, Types } from "mongoose";
-import { INote } from "./Notes";
+import mongoose, { Document, Schema, Types } from "mongoose";
 
 const taskStatus = {
    PENDING: "pending",
@@ -9,7 +8,15 @@ const taskStatus = {
    COMPLETE: "completed",
 } as const;
 
+const tasksPriority = {
+   LOW: "low",
+   MEDIUM: "medium",
+   HIGH: "high",
+   URGENT: "urgent",
+} as const;
+
 export type TaskStatus = (typeof taskStatus)[keyof typeof taskStatus];
+export type TaskPriority = (typeof tasksPriority)[keyof typeof tasksPriority];
 
 export interface ITask extends Document {
    name: string;
@@ -22,6 +29,7 @@ export interface ITask extends Document {
       updateAt: Date;
    }[];
    notes: Types.ObjectId[];
+   priority: TaskPriority;
 }
 
 export const TaskSchema: Schema = new Schema(
@@ -67,6 +75,11 @@ export const TaskSchema: Schema = new Schema(
             ref: "Note",
          },
       ],
+      priority: {
+         type: String,
+         enum: Object.values(tasksPriority),
+         default: tasksPriority.LOW,
+      },
    },
    { timestamps: true }
 );
