@@ -3,6 +3,7 @@ import NoteDetails from "./NoteDetails";
 import { Project } from "@/Types/Projects";
 import { Task } from "@/Types/Task";
 import { Profile } from "@/Types/User";
+import NoteModalLikes from "./NoteModalLikes";
 
 type NoteListProps = {
    projectID: Project["_id"];
@@ -37,6 +38,7 @@ export default function NoteList({ projectID, taskID, user }: NoteListProps) {
                   ))}
                </div>
             </div>
+            <NoteModalLikes />
          </div>
       );
 }

@@ -4,6 +4,7 @@ export interface INote extends Document {
    content: string;
    user: Types.ObjectId;
    task: Types.ObjectId;
+   likes: Types.ObjectId[];
 }
 
 const NoteShema: Schema = new Schema(
@@ -22,6 +23,12 @@ const NoteShema: Schema = new Schema(
          ref: "Task",
          require: true,
       },
+      likes: [
+         {
+            type: Types.ObjectId,
+            ref: "User",
+         },
+      ],
    },
    { timestamps: true }
 );

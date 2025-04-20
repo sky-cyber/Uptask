@@ -1,5 +1,5 @@
 import api from "@/Lib/Axios";
-import { ListNoteShema, Note } from "@/Types/Notes";
+import { likeMemberShemma, ListNoteShema, Note } from "@/Types/Notes";
 import { Project } from "@/Types/Projects";
 import { Task } from "@/Types/Task";
 import { isAxiosError } from "axios";
@@ -86,6 +86,41 @@ export const updateNoteFromTask = async ({
       const url = `projects/update-note/${noteID}`;
       const { data } = await api.patch<string>(url, formData);
       return data;
+   } catch (error) {
+      if (isAxiosError(error) && error.response) {
+         throw new Error(error.response.data.error);
+      }
+   }
+};
+
+export const addLikeMember = async ({
+   projectID,
+   taskID,
+   noteID,
+}: Pick<NoteApiProps, "projectID" | "taskID" | "noteID">) => {
+   try {
+      const url = `projects/${projectID}/tasks/${taskID}/note/${noteID}/addLikeMember`;
+      const { data } = await api.post<string>(url);
+      return data;
+   } catch (error) {
+      if (isAxiosError(error) && error.response) {
+         throw new Error(error.response.data.error);
+      }
+   }
+};
+
+export const getListLikeMember = async ({
+   projectID,
+   taskID,
+   noteID,
+}: Pick<NoteApiProps, "projectID" | "taskID" | "noteID">) => {
+   try {
+      const url = `projects/${projectID}/tasks/${taskID}/note/${noteID}/getListLikesMember`;
+      const { data } = await api.get(url);
+      const response = likeMemberShemma.safeParse(data);
+      if (response.success) {
+         return response.data;
+      }
    } catch (error) {
       if (isAxiosError(error) && error.response) {
          throw new Error(error.response.data.error);

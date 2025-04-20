@@ -1,11 +1,15 @@
 import {
+   addLikeMember,
    createNoteFromTask,
    deleteNoteFromTask,
+   getListLikeMember,
    getNoteDetailsFromTask,
    getNotesFromTask,
    updateNoteFromTask,
 } from "@/Services/NoteServices";
 import { Content, Note } from "@/Types/Notes";
+import { Project } from "@/Types/Projects";
+import { Task } from "@/Types/Task";
 import { useMutation, useQuery, QueryClient } from "@tanstack/react-query";
 import { UseFormReset } from "react-hook-form";
 import { toast } from "react-toastify";
@@ -15,7 +19,8 @@ type h_Params = {
    queryClient: QueryClient;
    noteID: Note["_id"];
    handleActiveTextArea: () => void;
-   taskID: string;
+   taskID: Task["_id"];
+   projectID: Project["_id"];
 };
 
 export const H_NoteList = (projectID: string, taskID: string) => {
@@ -102,4 +107,35 @@ export const H_NoteUpdate = ({
          toast.success(result);
       },
    });
+};
+
+export const H_NoteAddLikeMember = ({
+   queryClient,
+}: Pick<h_Params, "queryClient">) => {
+   return useMutation({
+      mutationFn: addLikeMember,
+      onError: (error) => {
+         toast.error(error.message);
+      },
+      onSuccess: () => {
+         queryClient.invalidateQueries({
+            queryKey: ["NoteList"],
+         });
+      },
+   });
+};
+
+export const H_NoteLikesMember = ({
+   projectID,
+   taskID,
+   noteID,
+}: Pick<h_Params, "projectID" | "taskID" | "noteID">) => {
+   const { data, isError, isLoading } = useQuery({
+      queryKey: ["like", noteID],
+      queryFn: () => getListLikeMember({ projectID, taskID, noteID }),
+      retry: false,
+      refetchOnWindowFocus: false,
+   });
+
+   return { data, isError, isLoading };
 };

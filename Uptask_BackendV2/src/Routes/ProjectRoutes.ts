@@ -172,4 +172,14 @@ router.patch(
    NotesController.updateNoteFromTask
 );
 
+router.post(
+   "/:projectID/tasks/:taskID/note/:noteID/addLikeMember",
+   NotesController.addLikeMemberFromNote
+);
+
+router.get(
+   "/:projectID/tasks/:taskID/note/:noteID/getListLikesMember",
+   NotesController.getListLikeMember
+);
+
 export default router;

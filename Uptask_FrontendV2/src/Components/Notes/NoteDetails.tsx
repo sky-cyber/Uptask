@@ -1,6 +1,6 @@
 import { formaFulltDate } from "@/helpers/Format";
 import { IsManager } from "@/helpers/IsManager";
-import { H_NoteDelete } from "@/Hooks/Note";
+import { H_NoteAddLikeMember, H_NoteDelete } from "@/Hooks/Note";
 import { Note } from "@/Types/Notes";
 import { Project } from "@/Types/Projects";
 import { Task } from "@/Types/Task";
@@ -10,6 +10,7 @@ import { useMemo, useState } from "react";
 import { BiSolidLike } from "react-icons/bi";
 import { FaEye, FaPencilAlt, FaTrashRestore } from "react-icons/fa";
 import NoteData from "./NoteData";
+import { useNavigate } from "react-router-dom";
 
 type NoteDetailsProps = {
    projectID: Project["_id"];
@@ -24,7 +25,11 @@ export default function NoteDetails({
    data,
    user,
 }: NoteDetailsProps) {
-   const [activeLike, setActiveLike] = useState(false);
+   const navigate = useNavigate();
+
+   const IsActiveLike = data.likes.some((x) => x === user);
+
+   const [activeLike, setActiveLike] = useState(IsActiveLike);
    const [activeEditText, setActiveEditText] = useState(false);
 
    const handleActiveLike = () => {
@@ -37,17 +42,28 @@ export default function NoteDetails({
 
    const queryClient = useQueryClient();
 
-   const { mutate } = H_NoteDelete({ queryClient });
+   const { mutate: noteDelete } = H_NoteDelete({ queryClient });
+   const { mutate: noteAddLike } = H_NoteAddLikeMember({
+      queryClient,
+   });
 
    const handleDeleteNote = async (noteID: Note["_id"]) => {
       const data = { projectID, taskID, noteID };
-      mutate(data);
+      noteDelete(data);
+   };
+
+   const handleAddLikeMember = (noteID: Note["_id"]) => {
+      const data = { projectID, taskID, noteID };
+      noteAddLike(data);
+      handleActiveLike();
    };
 
    const canDoneFuntion = useMemo(
       () => IsManager(data.user._id, user),
       [data, user]
    );
+
+   const IsReacionNote = data.likes.length ? "text-amber-500" : "text-gray-500";
 
    return (
       <div className="bg-discord-darker p-4 rounded-lg shadow">
@@ -86,13 +102,24 @@ export default function NoteDetails({
                            ? "text-discord-primary hover:text-blue-700"
                            : "text-gray-500"
                      } hover:text-discord-primary mr-2`}
-                     onClick={handleActiveLike}
+                     onClick={() => handleAddLikeMember(data._id)}
                   >
                      <BiSolidLike />
                      Like
                   </button>
-                  <button className="text-gray-500 text-lg hover:text-amber-400 hover:text-xl transition-all duration-100">
+                  <button
+                     type="button"
+                     onClick={() => {
+                        navigate(
+                           location.pathname +
+                              `?viewTask=${taskID}&viewLikes=${data._id}`
+                        );
+                     }}
+                     className={`flex justify-center items-center gap-1 text-lg hover:text-xl transition-all duration-100 ${IsReacionNote}
+                     } hover:text-amber-500 mr-2`}
+                  >
                      <FaEye />
+                     <span className="text-xs">{data.likes.length}</span>
                   </button>
                </div>
             )}

@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import { HandleErrorServer } from "../Utils/CachError";
 import Note from "../Model/Notes";
 import Task from "../Model/Tasks";
+import { link } from "node:fs";
 
 export class NotesController {
    static createNoteForTask = async (req: Request, res: Response) => {
@@ -80,6 +81,45 @@ export class NotesController {
          return HandleErrorServer(
             res,
             "Error en el controller NotesController/updateNoteFromTask"
+         );
+      }
+   };
+
+   static addLikeMemberFromNote = async (req: Request, res: Response) => {
+      try {
+         const userFound = req.note.likes.some(
+            (user) => user.toString() === req.user.id.toString()
+         );
+
+         if (userFound) {
+            req.note.likes = req.note.likes.filter(
+               (user) => user.toString() !== req.user.id.toString()
+            );
+         } else {
+            req.note.likes.push(req.user.id);
+         }
+         await req.note.save();
+         res.send("Agregado...");
+      } catch (error) {
+         return HandleErrorServer(
+            res,
+            "Error en el controller NotesController/addLikeMemberFromNote"
+         );
+      }
+   };
+
+   static getListLikeMember = async (req: Request, res: Response) => {
+      try {
+         const note = await Note.findById(req.note.id).populate({
+            path: "likes",
+            select: "_id name email urlImagen",
+         });
+
+         return res.json(note.likes);
+      } catch (error) {
+         return HandleErrorServer(
+            res,
+            "Error en el controller NotesController/getListLikeMember"
          );
       }
    };
