@@ -1,14 +1,11 @@
 import { formaFulltDate, formatDate } from "@/helpers/Format";
 import { statusColor, statusTraslations } from "@/helpers/TransisionStatus";
-import { updateStatusTask } from "@/Services/TaskServices";
 import { Project } from "@/Types/Projects";
 import { Task, TaskStatus } from "@/Types/Task";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { ChangeEvent, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { toast } from "react-toastify";
 import { SlArrowDownCircle, SlArrowUpCircle } from "react-icons/sl";
 import NotePanel from "../Notes/NotePanel";
+import { H_UpdateStatusTask } from "@/Hooks/Tasks";
 
 type TasksCardDetailProps = {
    projectID: Project["_id"];
@@ -23,30 +20,12 @@ export default function TasksCardDetail({
 }: TasksCardDetailProps) {
    const [openButton, setopenButton] = useState(false);
 
-   const navigate = useNavigate();
-
-   const queryClient = useQueryClient();
-
-   const mutation = useMutation({
-      mutationFn: updateStatusTask,
-      onError: (error) => {
-         toast.error(error.message);
-         toast.error("algo mal");
-      },
-      onSuccess: (result) => {
-         queryClient.invalidateQueries({
-            queryKey: ["ProjectDetails", projectID],
-         });
-         queryClient.invalidateQueries({ queryKey: ["taskView", taskID] });
-         toast.success(result);
-         navigate(location.pathname);
-      },
-   });
+   const { mutate } = H_UpdateStatusTask({ projectID, taskID });
 
    const handleChangeStatus = async (e: ChangeEvent<HTMLSelectElement>) => {
       const status = e.target.value as TaskStatus;
       const data = { projectID, taskID, status };
-      await mutation.mutateAsync(data);
+      await mutate(data);
    };
 
    const HandleOpenHistory = () => {

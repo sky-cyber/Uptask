@@ -16,6 +16,7 @@ import {
    priorityRGB,
    priorityTraslations,
 } from "@/helpers/TrasnsitionPriority";
+import { useDraggable } from "@dnd-kit/core";
 
 type TaskCardProp = {
    task: TaskCardData;
@@ -23,6 +24,16 @@ type TaskCardProp = {
 };
 
 export default function TaskCard({ task, CanUseThisFunction }: TaskCardProp) {
+   const { attributes, listeners, setNodeRef, transform } = useDraggable({
+      id: task._id,
+   });
+
+   const style = transform
+      ? {
+           transform: `translate3d(${transform.x}px, ${transform.y}px, 0)`,
+        }
+      : undefined;
+
    const navigate = useNavigate();
    const paramsURL = useParams();
    const projectID = paramsURL.projectID!;
@@ -50,7 +61,13 @@ export default function TaskCard({ task, CanUseThisFunction }: TaskCardProp) {
    const claseColorRG = priorityRGB[task.priority];
 
    return (
-      <li className="bg-discord-darker p-3 border flex justify-between gap-3 rounded-lg ring-1 ring-gray-500/20 border-b border-black/55">
+      <li
+         {...listeners}
+         {...attributes}
+         ref={setNodeRef}
+         style={style}
+         className="bg-discord-darker p-3 border flex justify-between gap-3 rounded-lg ring-1 ring-gray-500/20 border-b border-black/55"
+      >
          <div className="flex-auto min-w-16 flex flex-col gap-2">
             <div
                className={`flex justify-center w-16 text-xs ${claseColorRG} rounded-xl`}
@@ -63,13 +80,16 @@ export default function TaskCard({ task, CanUseThisFunction }: TaskCardProp) {
                </span>
             </div>
 
-            <div className="mb-3">
-               <button className="break-words text-xl font-bold text-slate-200 text-left">
+            <div className="mb-3 mt-3">
+               <button
+                  type="button"
+                  className="break-words text-xl font-bold text-slate-200 text-left"
+               >
                   {task.name}
+                  <p className="text-gray-400 text-sm break-words">
+                     {task.description}
+                  </p>
                </button>
-               <p className="text-gray-400 text-md break-words">
-                  {task.description}
-               </p>
             </div>
 
             <div className="flex justify-between items-center">

@@ -1,4 +1,4 @@
-import { z } from "zod";
+import { array, z } from "zod";
 import { authShemma } from "./User";
 
 export const TaskStatusSchemma = z.enum([
@@ -36,6 +36,10 @@ export const TaskSchemma = z.object({
    priority: TaskPrioritySchemma,
 });
 
+export const CardListShemma = z.object({
+   tasks: z.array(TaskSchemma),
+});
+
 export const ListTasksSchema = z.array(
    TaskSchemma.omit({ createBy: true, notes: true })
 );
@@ -47,3 +51,4 @@ export type TaskFormData = Pick<Task, "name" | "description" | "priority">;
 export type TaskStatus = z.infer<typeof TaskStatusSchemma>;
 export type TasksPriority = z.infer<typeof TaskPrioritySchemma>;
 export type TaskCantRegister = z.infer<typeof cantRegisterShema>;
+export type TaskCartList = z.infer<typeof CardListShemma>;
