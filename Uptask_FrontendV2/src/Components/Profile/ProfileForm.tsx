@@ -1,6 +1,5 @@
 import { FieldErrors, UseFormRegister } from "react-hook-form";
 import ErrorMessage from "../ErrorMessage";
-import { Profile } from "@/Types/User";
 
 type ProfileProps = {
    register: UseFormRegister<{
@@ -23,8 +22,6 @@ export default function profileForm({
    errors,
    urlImagen,
 }: ProfileProps) {
-   console.log(urlImagen);
-
    return (
       <>
          <div className="flex flex-row justify-center">
